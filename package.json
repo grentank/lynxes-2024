@@ -1,0 +1,19 @@
+{
+  "name": "p1w1d1",
+  "version": "1.0.0",
+  "description": "1. Если Windows -- установить WSL 2. Проверить, что NodeJs установлена через NVM 3. Пароль: `ingitwetrust`",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@elbrus/eslint-config": "^1.0.0",
+    "@eslint/js": "^9.6.0",
+    "@faker-js/faker": "^8.4.1",
+    "eslint": "^9.6.0",
+    "globals": "^15.7.0"
+  }
+}
