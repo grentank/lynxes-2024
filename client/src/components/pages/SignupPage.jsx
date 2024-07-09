@@ -63,7 +63,7 @@ export default function SignupPage({ handleSignup }) {
       </Form.Group>
 
       <Button variant="primary" type="submit">
-        Submit
+        Создать аккаунт
       </Button>
     </Form>
   );

@@ -8,7 +8,9 @@ const tokensRouter = Router();
 tokensRouter.get('/refresh', verifyRefreshToken, async (req, res) => {
   const { user } = res.locals;
   const { accessToken, refreshToken } = generateTokens({ user });
-  res.cookie('refreshToken', refreshToken, cookiesConfig).json({ user, accessToken });
+  setTimeout(() => {
+    res.cookie('refreshToken', refreshToken, cookiesConfig).json({ user, accessToken });
+  }, 1000);
 });
 
 module.exports = tokensRouter;

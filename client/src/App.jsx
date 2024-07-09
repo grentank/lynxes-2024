@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from 'react-router-dom';
 import Layout from './components/Layout';
 import MainPage from './components/pages/MainPage';
 import ChairsPage from './components/pages/ChairsPage';
 import LoginPage from './components/pages/LoginPage';
 import SignupPage from './components/pages/SignupPage';
-import axiosInstance from './axiosInstance';
+import axiosInstance, { setAccessToken } from './axiosInstance';
+import SkeletonLoader from './components/hoc/SkeletonLoader';
+import ProtectedRoute from './components/hoc/ProtectedRoute';
+import AccountPage from './components/pages/AccountPage';
 
 function App() {
   const [user, setUser] = useState(); // undefined | null | { id, name, email }
@@ -16,6 +23,7 @@ function App() {
       .then((res) => {
         const { user, accessToken } = res.data;
         setUser(user);
+        setAccessToken(accessToken);
       })
       .catch(() => {
         setUser(null);
@@ -26,6 +34,7 @@ function App() {
     try {
       const res = await axiosInstance.post('/auth/signup', signupData);
       setUser(res.data.user);
+      setAccessToken(res.data.accessToken);
       console.log(res);
     } catch (error) {
       console.log(error);
@@ -33,9 +42,22 @@ function App() {
     }
   };
 
-  const handleLogout = () => axiosInstance('/auth/logout').then(() => {
-    setUser(null)
-  })
+  const handleLogout = () =>
+    axiosInstance('/auth/logout').then(() => {
+      setUser(null);
+      setAccessToken('');
+    });
+
+  const handleLogin = async (formData) => {
+    try {
+      const res = await axiosInstance.post('/auth/login', formData);
+      setUser(res.data.user); // res.data = { user: {}, accessToken: '' }
+      setAccessToken(res.data.accessToken);
+    } catch (error) {
+      console.log(error);
+      alert(error.response.data.message);
+    }
+  };
 
   const router = createBrowserRouter([
     {
@@ -47,21 +69,40 @@ function App() {
         },
         {
           path: '/chairs',
-          element: <ChairsPage />,
+          element: <ChairsPage user={user} />,
         },
         {
-          path: '/login',
-          element: <LoginPage />,
+          path: '/account',
+          element: (
+            <ProtectedRoute isAllowed={!!user} redirectPath="/login">
+              <AccountPage />
+            </ProtectedRoute>
+          ),
+          errorElement: <Navigate to="/login" replace />,
+          loader: () => axiosInstance('/chairs/my').then((res) => res.data),
         },
         {
-          path: '/signup',
-          element: <SignupPage handleSignup={handleSignup} />,
+          element: <ProtectedRoute isAllowed={!user} />,
+          children: [
+            {
+              path: '/login',
+              element: <LoginPage handleLogin={handleLogin} />,
+            },
+            {
+              path: '/signup',
+              element: <SignupPage handleSignup={handleSignup} />,
+            },
+          ],
         },
       ],
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <SkeletonLoader isLoading={user === undefined}>
+      <RouterProvider router={router} />
+    </SkeletonLoader>
+  );
 }
 
 export default App;
