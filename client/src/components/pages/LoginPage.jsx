@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
+import UserContext from '../../contexts/user';
 
-export default function LoginPage({ handleLogin }) {
+export default function LoginPage() {
+  const { handleLogin } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   return (
     <Form
@@ -14,7 +16,11 @@ export default function LoginPage({ handleLogin }) {
     >
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Эл.Почта</Form.Label>
-        <Form.Control name="email" type="email" placeholder="mail@mail.com" />
+        <Form.Control
+          name="email"
+          type="email"
+          placeholder="mail@mail.com"
+        />
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="formBasicPassword">

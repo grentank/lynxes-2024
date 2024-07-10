@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button, Container, Nav, Navbar } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
+import UserContext from '../../contexts/user';
 
-export default function NavBar({ user, handleLogout }) {
+export default function NavBar() {
+  const { user, handleLogout } = useContext(UserContext);
   return (
     <Navbar bg="dark" data-bs-theme="dark">
       <Container>

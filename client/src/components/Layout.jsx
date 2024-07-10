@@ -3,12 +3,12 @@ import NavBar from './ui/NavBar';
 import { Outlet } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
 
-export default function Layout({ user, handleLogout }) {
+export default function Layout() {
   return (
     <Container>
       <Row>
         <Col>
-          <NavBar user={user} handleLogout={handleLogout} />
+          <NavBar />
         </Col>
       </Row>
       <Row>

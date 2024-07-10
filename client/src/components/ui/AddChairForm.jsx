@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
+import UserContext from '../../contexts/user';
 
 export default function AddChairForm({ addChairHandler }) {
+  const { user } = useContext(UserContext);
   return (
     <Form
       onSubmit={(e) => {
@@ -15,14 +17,24 @@ export default function AddChairForm({ addChairHandler }) {
         label="Название стула"
         className="mb-3"
       >
-        <Form.Control name="name" type="text" placeholder="Название стула" />
+        <Form.Control
+          disabled={!user}
+          name="name"
+          type="text"
+          placeholder="Название стула"
+        />
       </FloatingLabel>
       <FloatingLabel
         controlId="floatingInput"
         label="Ссылка на изображение"
         className="mb-3"
       >
-        <Form.Control name="image" type="url" placeholder="http://..." />
+        <Form.Control
+          disabled={!user}
+          name="image"
+          type="url"
+          placeholder="http://..."
+        />
       </FloatingLabel>
       <FloatingLabel
         controlId="floatingInput"
@@ -30,13 +42,14 @@ export default function AddChairForm({ addChairHandler }) {
         className="mb-3"
       >
         <Form.Control
+          disabled={!user}
           as="textarea"
           name="description"
           type="text"
           placeholder="Описание стула"
         />
       </FloatingLabel>
-      <Button variant="primary" type="submit">
+      <Button variant="primary" type="submit" disabled={!user}>
         Добавить стул
       </Button>
     </Form>
