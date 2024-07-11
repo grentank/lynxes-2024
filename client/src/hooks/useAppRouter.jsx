@@ -7,6 +7,9 @@ import ProtectedRoute from '../components/hoc/ProtectedRoute';
 import AccountPage from '../components/pages/AccountPage';
 import LoginPage from '../components/pages/LoginPage';
 import SignupPage from '../components/pages/SignupPage';
+import EffectPage from '../components/pages/EffectPage';
+import OneChairPage from '../components/pages/OneChairPage';
+import SearchPage from '../components/pages/SearchPage';
 
 export default function useAppRouter(user) {
   return createBrowserRouter([
@@ -20,6 +23,18 @@ export default function useAppRouter(user) {
         {
           path: '/chairs',
           element: <ChairsPage />,
+        },
+        {
+          path: '/search',
+          element: <SearchPage />,
+        },
+        {
+          path: '/chairs/:chairId',
+          element: <OneChairPage />,
+        },
+        {
+          path: '/effect',
+          element: <EffectPage />,
         },
         {
           path: '/account',

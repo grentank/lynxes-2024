@@ -16,6 +16,9 @@ export default function NavBar() {
           <Nav.Link as={NavLink} to="/chairs">
             Стулья
           </Nav.Link>
+          <Nav.Link as={NavLink} to="/effect">
+            useEffect
+          </Nav.Link>
           {user ? (
             <>
               <Nav.Link as={NavLink} to="/account">

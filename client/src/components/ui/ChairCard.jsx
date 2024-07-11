@@ -3,13 +3,10 @@ import { Button, Card } from 'react-bootstrap';
 import Skeleton from 'react-loading-skeleton';
 import TrashIcon from './TrashIcon';
 import UserContext from '../../contexts/user';
+import { Link } from 'react-router-dom';
 
-export default function ChairCard({
-  chair,
-  loading,
-  deleteChairHandler,
-}) {
-  const { user } = useContext(UserContext)
+export default function ChairCard({ chair, loading, deleteChairHandler }) {
+  const { user } = useContext(UserContext);
   return (
     <Card style={{ width: '18rem' }}>
       {loading ? (
@@ -44,6 +41,7 @@ export default function ChairCard({
             <TrashIcon />
           </Button>
         )}
+        <Link to={`/chairs/${chair.id}`}>View</Link>
       </Card.Body>
     </Card>
   );
