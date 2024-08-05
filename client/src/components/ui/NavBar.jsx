@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import UserContext from '../../contexts/user';
 
 export default function NavBar() {
-  const { user, handleLogout } = useContext(UserContext);
+  const { user, handleLogout } = useContext(UserContext); // Provider -> {}
   return (
     <Navbar bg="dark" data-bs-theme="dark">
       <Container>
@@ -23,6 +23,9 @@ export default function NavBar() {
             <>
               <Nav.Link as={NavLink} to="/account">
                 Личный акк
+              </Nav.Link>
+              <Nav.Link as={NavLink} to="/chat">
+                Чат
               </Nav.Link>
               <Button onClick={handleLogout}>Выход</Button>
             </>

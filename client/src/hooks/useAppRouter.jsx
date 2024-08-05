@@ -10,6 +10,7 @@ import SignupPage from '../components/pages/SignupPage';
 import EffectPage from '../components/pages/EffectPage';
 import OneChairPage from '../components/pages/OneChairPage';
 import SearchPage from '../components/pages/SearchPage';
+import ChatPage from '../components/pages/chat/ChatPage';
 
 export default function useAppRouter(user) {
   return createBrowserRouter([
@@ -27,6 +28,14 @@ export default function useAppRouter(user) {
         {
           path: '/search',
           element: <SearchPage />,
+        },
+        {
+          path: '/chat',
+          element: (
+            <ProtectedRoute isAllowed={!!user} redirectPath="/login">
+              <ChatPage />
+            </ProtectedRoute>
+          ),
         },
         {
           path: '/chairs/:chairId',
