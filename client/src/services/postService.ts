@@ -9,7 +9,7 @@ class PostService {
 
   async getAllPosts(): Promise<PostT[]> {
     try {
-      const res = await this.client('/posts');
+      const res = await this.client('/posts'); // axios('/posts')
       if (res.status !== 200) throw new Error('Error fetching posts');
       return postSchema.array().parse(res.data);
     } catch (error) {
@@ -22,9 +22,16 @@ class PostService {
     }
   }
 
-  async deletePost(postId: PostT['id']): Promise<void> {
+  async deletePost(postId: PostT['id']): Promise<PostT['id']> {
     const res = await this.client.delete(`/posts/${postId}`);
     if (res.status !== 204) throw new Error('Wrong status while deleting a post');
+    return postId;
+  }
+
+  async createPost(formData: Omit<PostT, 'id'>): Promise<PostT> {
+    const res = await this.client.post('/posts', formData);
+    if (res.status === 201) return postSchema.parse(res.data);
+    return Promise.reject(new Error('Ошибка добавления постов (чекни статус)'));
   }
 }
 

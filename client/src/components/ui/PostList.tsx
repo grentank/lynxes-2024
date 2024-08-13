@@ -1,10 +1,11 @@
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { usePosts } from '../../contexts/PostContext';
+import type { PostT } from '../../types/post';
 import PostCard from './PostCard';
+import { useAppSelector } from '../../redux/hooks';
 
 export default function PostList(): JSX.Element {
-  const { posts } = usePosts();
+  const posts = useAppSelector(store => store.posts.posts)
   return (
     <Row>
       {posts.map((post) => (
