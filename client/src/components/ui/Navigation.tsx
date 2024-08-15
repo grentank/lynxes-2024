@@ -24,13 +24,26 @@ export default function Navigation(): JSX.Element {
           <Nav.Link as={NavLink} to="/">
             Home
           </Nav.Link>
-          <Nav.Link as={NavLink} to="/login">
-            Login
-          </Nav.Link>
-          <Nav.Link as={Button} onClick={() => dispatch(openModal('Создание поста'))}>
-            <PlusCircleIcon />
-          </Nav.Link>
-          <Button onClick={() => void dispatch(logoutThunk())}>Выйти</Button>
+          {user.status === UserStatus.Logged ? (
+            <>
+              <Nav.Link as={NavLink} to="/profile">
+                Profile
+              </Nav.Link>
+              <Nav.Link as={Button} onClick={() => dispatch(openModal('Создание поста'))}>
+                <PlusCircleIcon />
+              </Nav.Link>
+              <Button onClick={() => void dispatch(logoutThunk())}>Выйти</Button>
+            </>
+          ) : (
+            <>
+              <Nav.Link as={NavLink} to="/login">
+                Login
+              </Nav.Link>
+              <Nav.Link as={NavLink} to="/signup">
+                Signup
+              </Nav.Link>
+            </>
+          )}
         </Nav>
       </Container>
     </Navbar>

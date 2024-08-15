@@ -4,39 +4,52 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { closeModal } from '../../redux/slices/modal/modalSlice';
-import { submitPostThunk } from '../../redux/slices/posts/thunks';
+import { editPostThunk, submitPostThunk } from '../../redux/slices/posts/thunks';
+import type { PostFormT } from '../../types/post';
+import { setChosenPost } from '../../redux/slices/posts/postSlice';
 
 export default function PostsModal(): JSX.Element {
-  const { open, title } = useAppSelector((store) => store.modal);
+  const chosenPost = useAppSelector((store) => store.posts.chosenPost);
+  const { open } = useAppSelector((store) => store.modal);
   const dispatch = useAppDispatch();
   const handleClose = (): void => {
     dispatch(closeModal());
+    dispatch(setChosenPost(null));
+  };
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    const formData = Object.fromEntries(new FormData(e.currentTarget)) as PostFormT;
+    if (!chosenPost) void dispatch(submitPostThunk(formData));
+    else void dispatch(editPostThunk({ ...formData, id: chosenPost.id }));
+    e.currentTarget.reset();
+    handleClose();
   };
   return (
     <Modal show={open} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>{title}</Modal.Title>
+        <Modal.Title>
+          {chosenPost ? `Редактирование поста ${chosenPost.id}` : 'Создание поста'}
+        </Modal.Title>
       </Modal.Header>
-      <Form
-        onSubmit={(e) => {
-          e.preventDefault();
-          const formData = Object.fromEntries(new FormData(e.currentTarget)) as {
-            title: string;
-            body: string;
-          };
-          void dispatch(submitPostThunk(formData));
-          e.currentTarget.reset();
-          handleClose();
-        }}
-      >
+      <Form onSubmit={handleSubmit}>
         <Modal.Body>
           <Form.Group className="mb-3">
             <Form.Label>Заголовок</Form.Label>
-            <Form.Control name="title" type="text" placeholder="Заголовок поста" />
+            <Form.Control
+              defaultValue={chosenPost?.title || ''}
+              name="title"
+              type="text"
+              placeholder="Заголовок поста"
+            />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Текст поста</Form.Label>
-            <Form.Control name="body" as="textarea" rows={3} />
+            <Form.Control
+              defaultValue={chosenPost?.body || ''}
+              name="body"
+              as="textarea"
+              rows={3}
+            />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
@@ -44,7 +57,7 @@ export default function PostsModal(): JSX.Element {
             Close
           </Button>
           <Button variant="primary" type="submit">
-            Создать пост
+            {chosenPost ? 'Сохранить' : 'Создать'}
           </Button>
         </Modal.Footer>
       </Form>

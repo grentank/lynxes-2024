@@ -1,7 +1,7 @@
 import type { AxiosInstance } from 'axios';
 import { ZodError } from 'zod';
 import axiosInstance from './client';
-import type { PostT } from '../types/post';
+import type { PostFormT, PostT } from '../types/post';
 import { postSchema } from '../types/post';
 
 class PostService {
@@ -28,10 +28,16 @@ class PostService {
     return postId;
   }
 
-  async createPost(formData: Omit<PostT, 'id'>): Promise<PostT> {
+  async createPost(formData: PostFormT): Promise<PostT> {
     const res = await this.client.post('/posts', formData);
     if (res.status === 201) return postSchema.parse(res.data);
     return Promise.reject(new Error('Ошибка добавления постов (чекни статус)'));
+  }
+
+  async editPost(formData: PostFormT, id: PostT['id']): Promise<PostT> {
+    const res = await this.client.patch(`/posts/${id}`, formData);
+    if (res.status === 200) return postSchema.parse(res.data);
+    return Promise.reject(new Error('Ошибка редактирование поста (чекни статус)'));
   }
 }
 

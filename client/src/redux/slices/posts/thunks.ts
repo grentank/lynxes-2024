@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import postService from '../../../services/postService';
-import type { PostT } from '../../../types/post';
+import type { PostFormT, PostT } from '../../../types/post';
 
 export const getPostsThunk = createAsyncThunk('posts/getPostsThunk', async () =>
   postService.getAllPosts(),
@@ -13,5 +13,11 @@ export const deletePostThunk = createAsyncThunk(
 
 export const submitPostThunk = createAsyncThunk(
   'posts/submitPostThunk',
-  (formData: Omit<PostT, 'id'>) => postService.createPost(formData),
+  (formData: PostFormT) => postService.createPost(formData),
+);
+
+export const editPostThunk = createAsyncThunk(
+  'posts/editPostThunk',
+  ({ title, body, id }: PostFormT & { id: PostT['id'] }) =>
+    postService.editPost({ title, body }, id),
 );

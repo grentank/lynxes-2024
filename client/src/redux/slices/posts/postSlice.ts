@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { PostSliceT, PostT } from '../../../types/post';
-import { deletePostThunk, getPostsThunk, submitPostThunk } from './thunks';
+import { deletePostThunk, editPostThunk, getPostsThunk, submitPostThunk } from './thunks';
 
 const initialState: PostSliceT = {
   posts: [],
@@ -13,6 +13,9 @@ export const postSlice = createSlice({
   name: 'post',
   initialState,
   reducers: {
+    setChosenPost: (state, action: PayloadAction<PostT | null>) => {
+      state.chosenPost = action.payload;
+    },
     dislikeAllPosts: (state) => {
       state.favoritePosts = [];
     },
@@ -32,10 +35,15 @@ export const postSlice = createSlice({
       })
       .addCase(submitPostThunk.fulfilled, (state, action) => {
         state.posts.unshift(action.payload);
+      })
+      .addCase(editPostThunk.fulfilled, (state, action) => {
+        const postIndex = state.posts.findIndex((post) => post.id === action.payload.id);
+        if (postIndex === -1) return;
+        state.posts[postIndex] = action.payload;
       });
   },
 });
 
-export const { dislikeAllPosts, addToFavorite } = postSlice.actions;
+export const { dislikeAllPosts, addToFavorite, setChosenPost } = postSlice.actions;
 
 export default postSlice.reducer;
