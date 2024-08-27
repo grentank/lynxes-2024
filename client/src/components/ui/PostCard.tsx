@@ -2,7 +2,7 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import type { PostT } from '../../types/post';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { useAppDispatch } from '../../redux/hooks';
 import { addToFavorite, setChosenPost } from '../../redux/slices/posts/postSlice';
 import HeartFilledIcon from './icons/HeartFilledIcon';
 import HeartIcon from './icons/HeartIcon';

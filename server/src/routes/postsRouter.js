@@ -11,7 +11,7 @@ postsRouter
 
 postsRouter
   .route('/:postId')
-  .delete(verifyAccessToken, postController.deletePost)
+  .delete(postController.deletePost)
   .patch(verifyAccessToken, postController.patchPost);
 
 module.exports = postsRouter;

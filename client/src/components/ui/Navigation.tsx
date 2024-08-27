@@ -7,7 +7,6 @@ import { NavLink } from 'react-router-dom';
 import PlusCircleIcon from './icons/PlusCircleIcon';
 import { openModal } from '../../redux/slices/modal/modalSlice';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { clearAuth } from '../../redux/slices/auth/authSlice';
 import { UserStatus } from '../../types/auth';
 import { logoutThunk } from '../../redux/slices/auth/thunks';
 
@@ -23,6 +22,9 @@ export default function Navigation(): JSX.Element {
         <Nav className="me-auto">
           <Nav.Link as={NavLink} to="/">
             Home
+          </Nav.Link>
+          <Nav.Link as={NavLink} to="/query">
+            Query
           </Nav.Link>
           {user.status === UserStatus.Logged ? (
             <>

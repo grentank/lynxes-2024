@@ -7,6 +7,7 @@ import ProtectedRoute from '../components/HOC/ProtectedRoute';
 import SignupPage from '../components/pages/SignupPage';
 import { useAppSelector } from '../redux/hooks';
 import { UserStatus } from '../types/auth';
+import QueryPage from '../components/pages/QueryPage';
 
 export default function useAppRoutes(): ReturnType<typeof createBrowserRouter> {
   const status = useAppSelector((store) => store.auth.user.status);
@@ -17,6 +18,10 @@ export default function useAppRoutes(): ReturnType<typeof createBrowserRouter> {
         {
           path: '/',
           element: <MainPage />,
+        },
+        {
+          path: '/query',
+          element: <QueryPage />,
         },
         {
           element: <ProtectedRoute isAllowed={status === UserStatus.Guest} />,
